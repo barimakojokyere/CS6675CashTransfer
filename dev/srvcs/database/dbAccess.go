@@ -11,80 +11,83 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func InsertIntoDB(collectionName string, input interface{}) {
+func InsertIntoDB(dbName string, collectionName string, input interface{}) (err error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(utils.DBURI))
 	if err != nil {
-		panic("Error connecting to Database")
+		return err
 	}
 	defer client.Disconnect(ctx)
 	fmt.Println("Successfully connected to DB")
 
-	database := client.Database(utils.DBNAME)
+	database := client.Database(dbName)
 	collectionObj := database.Collection(collectionName)
 	result, err := collectionObj.InsertOne(ctx, input)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Println(result.InsertedID)
+
+	return nil
 }
 
-func UpdateInDB(collectionName string, id string, input interface{}) {
+func UpdateInDB(dbName string, collectionName string, id string, input interface{}) (err error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(utils.DBURI))
 	if err != nil {
-		panic("Error connecting to Database")
+		return err
 	}
 	defer client.Disconnect(ctx)
 	fmt.Println("Successfully connected to DB")
 
-	database := client.Database(utils.DBNAME)
+	database := client.Database(dbName)
 	collectionObj := database.Collection(collectionName)
-	result, err := collectionObj.ReplaceOne(
+	_, err = collectionObj.ReplaceOne(
 		ctx,
 		bson.M{"_id": id},
 		input,
 	)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	fmt.Println(result.ModifiedCount)
+	return nil
 }
 
-func RetrieveFromDB(collectionName string, id string) (output bson.M) {
+func RetrieveFromDB(dbName string, collectionName string, id string) (output bson.M, err error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(utils.DBURI))
 	if err != nil {
-		panic("Error connecting to Database")
+		return output, err
 	}
 	defer client.Disconnect(ctx)
 	fmt.Println("Successfully connected to DB")
 
-	database := client.Database(utils.DBNAME)
+	database := client.Database(dbName)
 	collectionObj := database.Collection(collectionName)
 	err = collectionObj.FindOne(ctx, bson.M{"_id": id}).Decode(&output)
 	if err != nil {
-		panic(err)
+		return output, err
 	}
-	fmt.Println(output)
 
-	return output
+	return output, nil
 }
 
-func RemoveFromDB(collectionName string, id string) {
+func RemoveFromDB(dbName string, collectionName string, id string) (err error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(utils.DBURI))
 	if err != nil {
-		panic("Error connecting to Database")
+		return err
 	}
 	defer client.Disconnect(ctx)
 	fmt.Println("Successfully connected to DB")
 
-	database := client.Database(utils.DBNAME)
+	database := client.Database(dbName)
 	collectionObj := database.Collection(collectionName)
 	result, err := collectionObj.DeleteOne(ctx, bson.M{"_id": id})
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Println(result.DeletedCount)
+
+	return nil
 }

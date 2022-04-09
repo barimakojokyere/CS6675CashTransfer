@@ -7,22 +7,38 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func CreateUser(user utils.User) {
-	database.InsertIntoDB(utils.USERSCOLLECTION, user)
+func CreateUser(user utils.User) (err error) {
+	err = database.InsertIntoDB(utils.CASHTRANSFERDBNAME, utils.USERSCOLLECTION, user)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func RetrieveUser(username string) (user utils.User) {
-	output := database.RetrieveFromDB(utils.USERSCOLLECTION, username)
+func RetrieveUser(username string) (user utils.User, err error) {
+	output, err := database.RetrieveFromDB(utils.CASHTRANSFERDBNAME, utils.USERSCOLLECTION, username)
+	if err != nil {
+		return user, err
+	}
 
 	outputBytes, _ := bson.Marshal(output)
 	bson.Unmarshal(outputBytes, &user)
-	return user
+	return user, nil
 }
 
-func DeleteUser(username string) {
-	database.RemoveFromDB(utils.USERSCOLLECTION, username)
+func DeleteUser(username string) (err error) {
+	err = database.RemoveFromDB(utils.CASHTRANSFERDBNAME, utils.USERSCOLLECTION, username)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func UpdateUser(username string, user utils.User) {
-	database.UpdateInDB(utils.USERSCOLLECTION, username, user)
+func UpdateUser(username string, user utils.User) (err error) {
+	err = database.UpdateInDB(utils.CASHTRANSFERDBNAME, utils.USERSCOLLECTION, username, user)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

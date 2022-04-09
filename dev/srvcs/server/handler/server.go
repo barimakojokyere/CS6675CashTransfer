@@ -14,24 +14,36 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var user utils.User
 	json.Unmarshal(reqBody, &user)
-	svrsrvc.CreateUser(user)
-	json.NewEncoder(w).Encode(user)
+	err := svrsrvc.CreateUser(user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else {
+		json.NewEncoder(w).Encode(user)
+	}
 }
 
 func RetrieveUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	username := vars["username"]
 
-	user := svrsrvc.RetrieveUser(username)
-	json.NewEncoder(w).Encode(user)
+	user, err := svrsrvc.RetrieveUser(username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+	} else {
+		json.NewEncoder(w).Encode(user)
+	}
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	username := vars["username"]
 
-	svrsrvc.DeleteUser(username)
-	json.NewEncoder(w).Encode(username)
+	err := svrsrvc.DeleteUser(username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else {
+		json.NewEncoder(w).Encode(username)
+	}
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
