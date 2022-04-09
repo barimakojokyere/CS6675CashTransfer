@@ -26,6 +26,23 @@ func RetrieveAccount(username string) (account utils.PayPalAccount, err error) {
 	return account, nil
 }
 
+func RetrieveAllAccounts() (accounts []utils.PayPalAccount, err error) {
+	output, err := database.RetrieveAllInCollection(utils.PAYPALDBNAME, utils.ACCNTSCOLLECTION)
+	if err != nil {
+		return accounts, err
+	}
+
+	var currAccount utils.PayPalAccount
+
+	for _, currOutput := range output {
+		outputBytes, _ := bson.Marshal(currOutput)
+		bson.Unmarshal(outputBytes, &currAccount)
+		accounts = append(accounts, currAccount)
+	}
+
+	return accounts, nil
+}
+
 func MakeTransfer(username string, transferInfo utils.TransferInfo) (err error) {
 
 	var destUserAccount utils.PayPalAccount

@@ -17,10 +17,10 @@ type Accounts struct {
 }
 
 type User struct {
-	UserID  string `bson:"_id,omitempty" json:"userid"`
-	Name    string `bson:"name,omitempty" json:"name"`
-	Country string `bson:"country,omitempty" json:"country"`
-	Email   string `bson:"email,omitempty" json:"email"`
+	Username string `bson:"_id,omitempty" json:"username"`
+	Name     string `bson:"name,omitempty" json:"name"`
+	Country  string `bson:"country,omitempty" json:"country"`
+	Email    string `bson:"email,omitempty" json:"email"`
 }
 
 type ExternalAccounts struct {

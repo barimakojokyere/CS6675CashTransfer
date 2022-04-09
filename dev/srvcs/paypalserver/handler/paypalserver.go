@@ -35,6 +35,15 @@ func RetrieveAccount(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func RetrieveAllAccounts(w http.ResponseWriter, r *http.Request) {
+	accounts, err := paypalsrvc.RetrieveAllAccounts()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+	} else {
+		json.NewEncoder(w).Encode(accounts)
+	}
+}
+
 func MakeTransfer(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	username := vars["username"]

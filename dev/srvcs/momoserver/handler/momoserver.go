@@ -48,3 +48,12 @@ func MakeTransfer(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(transferInfo)
 	}
 }
+
+func RetrieveAllAccounts(w http.ResponseWriter, r *http.Request) {
+	accounts, err := momosrvc.RetrieveAllAccounts()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+	} else {
+		json.NewEncoder(w).Encode(accounts)
+	}
+}

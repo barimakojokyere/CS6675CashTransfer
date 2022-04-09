@@ -72,6 +72,31 @@ func RetrieveFromDB(dbName string, collectionName string, id string) (output bso
 	return output, nil
 }
 
+func RetrieveAllInCollection(dbName string, collectionName string) (accounts []bson.M, err error) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(utils.DBURI))
+	if err != nil {
+		return accounts, err
+	}
+	defer client.Disconnect(ctx)
+	fmt.Println("Successfully connected to DB")
+
+	database := client.Database(dbName)
+	collectionObj := database.Collection(collectionName)
+	cursor, err := collectionObj.Find(ctx, bson.D{})
+	if err != nil {
+		return accounts, err
+	}
+	defer cursor.Close(ctx)
+
+	err = cursor.All(ctx, &accounts)
+	if err != nil {
+		return accounts, err
+	}
+
+	return accounts, nil
+}
+
 func RemoveFromDB(dbName string, collectionName string, id string) (err error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(utils.DBURI))
