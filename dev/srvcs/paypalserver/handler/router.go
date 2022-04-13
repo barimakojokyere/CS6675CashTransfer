@@ -15,5 +15,5 @@ func HandleRequests() {
 	router.HandleFunc(utils.PAYPALRESTAPIBASUEURL+"/account/{username}", RetrieveAccount).Methods("GET")
 	router.HandleFunc(utils.PAYPALRESTAPIBASUEURL+"/transfer/{username}", MakeTransfer).Methods("POST")
 	router.HandleFunc(utils.PAYPALRESTAPIBASUEURL+"/accounts", RetrieveAllAccounts).Methods("GET")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":8082", router))
 }

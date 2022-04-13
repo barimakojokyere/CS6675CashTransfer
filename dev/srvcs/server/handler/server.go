@@ -53,6 +53,37 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var user utils.User
 	json.Unmarshal(reqBody, &user)
-	svrsrvc.UpdateUser(username, user)
-	json.NewEncoder(w).Encode(user)
+	err := svrsrvc.UpdateUser(username, user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else {
+		json.NewEncoder(w).Encode(user)
+	}
+}
+
+func InitiateTransfer(w http.ResponseWriter, r *http.Request) {
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	var request utils.TransferRequest
+	json.Unmarshal(reqBody, &request)
+	err := svrsrvc.InitiateTransfer(request)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else {
+		json.NewEncoder(w).Encode(request)
+	}
+}
+
+func FulfillTransfer(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	username := vars["username"]
+
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	var request utils.TransferRequest
+	json.Unmarshal(reqBody, &request)
+	err := svrsrvc.FulfillTransfer(username, request)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else {
+		json.NewEncoder(w).Encode(request)
+	}
 }

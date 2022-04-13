@@ -15,5 +15,5 @@ func HandleRequests() {
 	router.HandleFunc(utils.MOMORESTAPIBASUEURL+"/account/{username}", RetrieveAccount).Methods("GET")
 	router.HandleFunc(utils.MOMORESTAPIBASUEURL+"/transfer/{username}", MakeTransfer).Methods("POST")
 	router.HandleFunc(utils.MOMORESTAPIBASUEURL+"/accounts", RetrieveAllAccounts).Methods("GET")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":8081", router))
 }
