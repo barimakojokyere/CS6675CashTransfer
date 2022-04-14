@@ -100,6 +100,18 @@ func MakeMomoTransfer(senderUsername, receiverUserName string, amount float32) (
 }
 
 func MakePayPalTransfer(senderUsername, receiverUserName string, amount float32) (err error) {
+
+	var paypalTransferInfo utils.TransferInfo
+	paypalTransferInfo.DestUserID = receiverUserName
+	paypalTransferInfo.TransferAmount = amount
+
+	url := utils.PAYPALENDPOINT + "/transfer/" + senderUsername
+	body := &paypalTransferInfo
+	err = utils.CallRestAPI("POST", url, body)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -144,7 +156,7 @@ func FulfillTransfer(crowdUserUsername string, transfer utils.TransferRequest) (
 	}
 
 	//Do PayPal transfer
-	err = MakePayPalTransfer(senderPayPalID, crowdUserPayPalID, transfer.Amount)
+	err = MakePayPalTransfer(crowdUserPayPalID, senderPayPalID, transfer.Amount)
 	if err != nil {
 		return err
 	}

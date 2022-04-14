@@ -4,8 +4,9 @@ const RESTAPIBASEURL = "/rest/cashtransfer/v1"
 const PAYPALRESTAPIBASUEURL = "/rest/paypal/v1"
 const MOMORESTAPIBASUEURL = "/rest/momo/v1"
 
+const SERVERENDPOINT = "http://localhost:8080" + RESTAPIBASEURL
 const MOMOENDPOINT = "http://localhost:8081" + MOMORESTAPIBASUEURL
-const PAYPALENDPOINT = "http://localhost:8082/" + PAYPALRESTAPIBASUEURL
+const PAYPALENDPOINT = "http://localhost:8082" + PAYPALRESTAPIBASUEURL
 
 const DBURI = "mongodb://0.0.0.0:27017"
 const CASHTRANSFERDBNAME = "cashtransfer"
