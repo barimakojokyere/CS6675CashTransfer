@@ -73,6 +73,44 @@ func main() {
 			}
 			fmt.Println("Account successfully created!!!")
 			continue
+		case 3:
+			var paypalAccount utils.PayPalAccount
+			fmt.Println("Please enter your PayPal username:")
+			scanner.Scan()
+			paypalAccount.PayPalID = scanner.Text()
+			fmt.Println("Please enter you full name:")
+			scanner.Scan()
+			paypalAccount.PayPalName = scanner.Text()
+			fmt.Println("Please enter the amount for your PayPal account:")
+			scanner.Scan()
+			amountString := scanner.Text()
+			amount, _ := strconv.ParseFloat(amountString, 32)
+			paypalAccount.PayPalBalance = float32(amount)
+			err := clntservice.CreatePayPalAccount(paypalAccount)
+			if err != nil {
+				fmt.Println("Could not create PayPal account.")
+				continue
+			}
+			continue
+		case 4:
+			var momoAccount utils.MomoAccount
+			fmt.Println("Please enter your MTN Mobile Money username:")
+			scanner.Scan()
+			momoAccount.MomoID = scanner.Text()
+			fmt.Println("Please enter you full name:")
+			scanner.Scan()
+			momoAccount.MomoName = scanner.Text()
+			fmt.Println("Please enter the amount for your MTN Mobile Money account:")
+			scanner.Scan()
+			amountString := scanner.Text()
+			amount, _ := strconv.ParseFloat(amountString, 32)
+			momoAccount.MomoBalance = float32(amount)
+			err := clntservice.CreateMoMoAccount(momoAccount)
+			if err != nil {
+				fmt.Println("Could not create MTN Mobile Money account.")
+				continue
+			}
+			continue
 		case 5:
 			if username != "" {
 				message, err := clntservice.GetUserMessage(username)

@@ -45,6 +45,28 @@ func RegisterCashTransferAccount(user utils.User) (err error) {
 	return nil
 }
 
+func CreatePayPalAccount(paypalAccount utils.PayPalAccount) (err error) {
+	url := utils.PAYPALENDPOINT + "/account"
+	body := &paypalAccount
+	err = utils.CallRestAPI("POST", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func CreateMoMoAccount(momoAccount utils.MomoAccount) (err error) {
+	url := utils.MOMOENDPOINT + "/account"
+	body := &momoAccount
+	err = utils.CallRestAPI("POST", url, body)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func GetUserMessage(username string) (message string, err error) {
 	user, err := VerifyUser(username)
 	if err != nil {
