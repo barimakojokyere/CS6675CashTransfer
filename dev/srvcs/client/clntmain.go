@@ -147,6 +147,9 @@ func main() {
 				fmt.Println("Money transfer successfully fulfilled")
 			}
 			continue
+		default:
+			fmt.Println("You entered an incorrect value. Please enter a correct one.")
+			continue
 		}
 	}
 }
