@@ -22,11 +22,10 @@ func InsertIntoDB(dbName string, collectionName string, input interface{}) (err 
 
 	database := client.Database(dbName)
 	collectionObj := database.Collection(collectionName)
-	result, err := collectionObj.InsertOne(ctx, input)
+	_, err = collectionObj.InsertOne(ctx, input)
 	if err != nil {
 		return err
 	}
-	fmt.Println(result.InsertedID)
 
 	return nil
 }
@@ -108,11 +107,10 @@ func RemoveFromDB(dbName string, collectionName string, id string) (err error) {
 
 	database := client.Database(dbName)
 	collectionObj := database.Collection(collectionName)
-	result, err := collectionObj.DeleteOne(ctx, bson.M{"_id": id})
+	_, err = collectionObj.DeleteOne(ctx, bson.M{"_id": id})
 	if err != nil {
 		return err
 	}
-	fmt.Println(result.DeletedCount)
 
 	return nil
 }

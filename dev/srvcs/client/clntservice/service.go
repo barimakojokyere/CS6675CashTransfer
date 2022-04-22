@@ -4,7 +4,6 @@ import (
 	"cashtransfer/dev/utils"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -106,8 +105,6 @@ func FulfillTransfer(username string) (err error) {
 	request.Username = senderUserName
 	request.Amount = amount
 
-	fmt.Println(request)
-
 	url := utils.SERVERENDPOINT + "/transfer/fulfill/" + username
 	body := &request
 	err = utils.CallRestAPI("POST", url, body)
@@ -116,4 +113,50 @@ func FulfillTransfer(username string) (err error) {
 	}
 
 	return nil
+}
+
+func GetUserBalances(username string) (momoAccount utils.MomoAccount, paypalAccount utils.PayPalAccount, err error) {
+
+	// Get user PayPal and MoMo ID
+	user, err := VerifyUser(username)
+	if err != nil {
+		return momoAccount, paypalAccount, err
+	}
+
+	paypalID := user.PayPalID
+	momoID := user.MomoID
+
+	// Get MoMo balance
+	response, err := http.Get(utils.MOMOENDPOINT + "/account/" + momoID)
+	if err != nil {
+		return momoAccount, paypalAccount, errors.New("Error obtaining balances")
+	}
+
+	respBody, _ := ioutil.ReadAll(response.Body)
+	if response.StatusCode != 200 {
+		return momoAccount, paypalAccount, errors.New("Error obtaining balances")
+	}
+
+	jsonErr := json.Unmarshal(respBody, &momoAccount)
+	if jsonErr != nil {
+		return momoAccount, paypalAccount, errors.New("Error obtaining balances")
+	}
+
+	// Get PayPal balance
+	response, err = http.Get(utils.PAYPALENDPOINT + "/account/" + paypalID)
+	if err != nil {
+		return momoAccount, paypalAccount, errors.New("Error obtaining balances")
+	}
+
+	respBody, _ = ioutil.ReadAll(response.Body)
+	if response.StatusCode != 200 {
+		return momoAccount, paypalAccount, errors.New("Error obtaining balances")
+	}
+
+	jsonErr = json.Unmarshal(respBody, &paypalAccount)
+	if jsonErr != nil {
+		return momoAccount, paypalAccount, errors.New("Error obtaining balances")
+	}
+
+	return momoAccount, paypalAccount, nil
 }

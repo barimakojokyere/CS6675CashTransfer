@@ -3,19 +3,25 @@ package paypalsrvc
 import (
 	"cashtransfer/dev/srvcs/database"
 	"cashtransfer/dev/utils"
+	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 func CreateAccount(account utils.PayPalAccount) (err error) {
+	fmt.Println("Creating PayPal account.")
 	err = database.InsertIntoDB(utils.PAYPALDBNAME, utils.ACCNTSCOLLECTION, account)
 	if err != nil {
 		return err
 	}
+	fmt.Println("PayPal account successfully created.")
 	return nil
 }
 
 func RetrieveAccount(username string) (account utils.PayPalAccount, err error) {
+
+	fmt.Println("Retrieving PayPal account...")
+
 	output, err := database.RetrieveFromDB(utils.PAYPALDBNAME, utils.ACCNTSCOLLECTION, username)
 	if err != nil {
 		return account, err
@@ -23,10 +29,16 @@ func RetrieveAccount(username string) (account utils.PayPalAccount, err error) {
 
 	outputBytes, _ := bson.Marshal(output)
 	bson.Unmarshal(outputBytes, &account)
+
+	fmt.Println("PayPal account successfully retrieved.")
+
 	return account, nil
 }
 
 func RetrieveAllAccounts() (accounts []utils.PayPalAccount, err error) {
+
+	fmt.Println("Retrieving all PayPal accounts")
+
 	output, err := database.RetrieveAllInCollection(utils.PAYPALDBNAME, utils.ACCNTSCOLLECTION)
 	if err != nil {
 		return accounts, err
@@ -40,10 +52,14 @@ func RetrieveAllAccounts() (accounts []utils.PayPalAccount, err error) {
 		accounts = append(accounts, currAccount)
 	}
 
+	fmt.Println("All PayPal accounts have been successfully retrieved.")
+
 	return accounts, nil
 }
 
 func MakeTransfer(username string, transferInfo utils.TransferInfo) (err error) {
+
+	fmt.Println("Making PayPal transfer...")
 
 	var destUserAccount utils.PayPalAccount
 
@@ -79,6 +95,8 @@ func MakeTransfer(username string, transferInfo utils.TransferInfo) (err error) 
 	if err != nil {
 		return err
 	}
+
+	fmt.Println("PayPal transfer was successful...")
 
 	return nil
 }

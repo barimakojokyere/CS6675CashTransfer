@@ -22,6 +22,7 @@ func main() {
 		fmt.Println("5. Check Message")
 		fmt.Println("6. Make Transfer")
 		fmt.Println("7. Accept Transfer Request")
+		fmt.Println("8. Check accounts balance")
 		fmt.Println("**************************************************************")
 		fmt.Println("Please enter the number for the action you want and hit Enter:")
 
@@ -118,7 +119,11 @@ func main() {
 					fmt.Println("Could not retrieve your message")
 					continue
 				}
-				fmt.Println("Message: " + message)
+				if message != "" {
+					fmt.Println("Message: " + message)
+				} else {
+					fmt.Println("You have no messages at this time.")
+				}
 			} else {
 				fmt.Println("Please log in first...")
 			}
@@ -135,6 +140,8 @@ func main() {
 					continue
 				}
 				fmt.Println("Money transfer has been successfully initiated.")
+			} else {
+				fmt.Println("Please log in first...")
 			}
 			continue
 		case 7:
@@ -145,6 +152,21 @@ func main() {
 					continue
 				}
 				fmt.Println("Money transfer successfully fulfilled")
+			} else {
+				fmt.Println("Please log in first...")
+			}
+			continue
+		case 8:
+			if username != "" {
+				momoAccnt, paypalAccnt, err := clntservice.GetUserBalances(username)
+				if err != nil {
+					fmt.Println("Could not obtain user balances")
+					continue
+				}
+				fmt.Println("PayPal Balance: " + fmt.Sprint(paypalAccnt.PayPalBalance))
+				fmt.Println("MTN Mobile Money Balance: " + fmt.Sprint(momoAccnt.MomoBalance))
+			} else {
+				fmt.Println("Please log in first...")
 			}
 			continue
 		default:
