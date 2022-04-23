@@ -32,5 +32,6 @@ You will need two or more clients to run for it to make sense. To run each clien
 - Run command - ./client
 
 To transfer money between clients the first time the database is created, you should make sure the following are done.
-- Create PayPal and MoMo accounts for each of the clients
-- Create an account for the cash transfer app for each of the clients
+- After starting components and clients:  
+  - Create PayPal and MoMo accounts for each of the clients
+  - Create an account for the cash transfer app for each of the clients
