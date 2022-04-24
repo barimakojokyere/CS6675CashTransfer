@@ -92,6 +92,7 @@ func main() {
 				fmt.Println("Could not create PayPal account.")
 				continue
 			}
+			fmt.Println("PayPal account successfully created!!!")
 			continue
 		case 4:
 			var momoAccount utils.MomoAccount
@@ -111,6 +112,7 @@ func main() {
 				fmt.Println("Could not create MTN Mobile Money account.")
 				continue
 			}
+			fmt.Println("MoMo account successfully created!!!")
 			continue
 		case 5:
 			if username != "" {
