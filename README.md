@@ -1,8 +1,10 @@
 # CS6675CashTransfer
-This is the final project for OMSCS6675. It is a prototype of a money transfer program that will allow transfer of money from Ghana to the United States.
+This is the final project for OMSCS6675. It is a prototype of a money transfer program that will allow transfer of money from Ghana to the United States. A Demo of it can be accessed from here - https://drive.google.com/file/d/12jFzKaSLHHLhawFZwaF0M53c8pJGWzd1/view?usp=sharing
 
 ## Running the project
 Running the project requires five components: MongoDB database, Server, PayPal Server, MTN Mobile Money (MoMo) Server and Clients. Make sure that the following ports are open on the machine you run it on: 8080, 8081, 8082 and 27017. See below for how to start the various components.
+
+### Note that you need to start the database server and all other servers for the prototype to work properly
 
 MongoDB database
 - The quickest way to run a MongoDB for the project is to use a docker container running on port 0.0.0.0:27017.
