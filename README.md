@@ -26,7 +26,7 @@ MoMo Server
 - Run command - ./momoserver
 
 Client
-You will need two or more clients to run for it to make sense. To run each client, do the following:
+You will need two or more clients to run to simulate the transfers. To run each client, do the following:
 - Open a new terminal
 - Change directory into /dev/bin directory
 - Run command - ./client
